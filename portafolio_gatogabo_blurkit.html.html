@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portafolio Staff | gatogabo — Blurkit Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{
+  --bg:#1f1f21;
+  --card:#2a2a2d;
+  --text:#f4f4f5;
+  --muted:#a1a1a8;
+  --accent:#7aac2b;
+  --accent-soft:rgba(122,172,43,.14);
+  --accent2:#c4a87c;
+  --accent2-soft:rgba(196,168,124,.14);
+  --border:rgba(161,161,168,.18);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:'Syne',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+.hero-bg{
+  background:
+    radial-gradient(1000px 500px at 85% -10%, rgba(122,172,43,.18), transparent 60%),
+    radial-gradient(800px 400px at 10% 110%, rgba(196,168,124,.12), transparent 60%),
+    var(--bg);
+}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.gradient-text{
+  background:linear-gradient(100deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.gallery-item{
+  transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+  cursor:pointer;
+}
+.gallery-item:hover{
+  transform:translateY(-6px) scale(1.02);
+  box-shadow:0 20px 50px rgba(122,172,43,.2);
+  border-color:var(--accent)!important;
+}
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.92);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  backdrop-filter:blur(8px);
+}
+.modal.active{display:flex}
+.modal img{
+  max-width:100%;
+  max-height:90vh;
+  border-radius:12px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+.modal-close{
+  position:absolute;
+  top:24px;
+  right:24px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:var(--card);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:24px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .2s ease;
+}
+.modal-close:hover{background:var(--accent);border-color:var(--accent)}
+.modal-caption{
+  position:absolute;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--card);
+  padding:12px 24px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  max-width:600px;
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+}
+.nav-link{
+  position:relative;
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  font-weight:500;
+  transition:color .2s ease;
+  padding:4px 0;
+}
+.nav-link:hover,.nav-link.active{color:var(--text)}
+.nav-link::after{
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--accent);
+  transition:width .3s ease;
+}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.timeline-dot{
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 4px var(--accent-soft);
+  flex-shrink:0;
+}
+.stat-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px;
+  transition:all .3s ease;
+}
+.stat-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(122,172,43,.15);
+}
+.section-tag{
+  display:inline-block;
+  font-family:monospace;
+  font-size:11px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:12px;
+}
+.btn-primary{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 28px;
+  background:var(--accent);
+  color:var(--bg);
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:700;
+  font-size:15px;
+  transition:all .25s ease;
+  border:none;
+  cursor:pointer;
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(122,172,43,.4);
+}
+.btn-secondary{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 28px;
+  background:transparent;
+  color:var(--text);
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:600;
+  font-size:15px;
+  border:1px solid var(--border);
+  transition:all .25s ease;
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav style="position:sticky;top:0;z-index:100;background:rgba(31,31,33,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)">
+  <div style="max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:12px">
+      <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/11a5f2e10e5d40deb943df091db180d4.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=1svC%2Bq6Xj2au%2BLHUy%2FezHPdfgmc%3D" style="width:36px;height:36px;border-radius:8px" alt="BK Logo" onerror="this.style.display='none'">
+      <span style="font-weight:800;font-size:18px">gatogabo<span style="color:var(--accent)">.</span>staff</span>
+    </div>
+    <div style="display:flex;gap:28px;flex-wrap:wrap">
+      <a href="#inicio" class="nav-link active">Inicio</a>
+      <a href="#trayectoria" class="nav-link">Trayectoria</a>
+      <a href="#evidencias" class="nav-link">Evidencias</a>
+      <a href="#capacitacion" class="nav-link">Capacitación</a>
+      <a href="#reconocimientos" class="nav-link">Reconocimientos</a>
+      <a href="#contacto" class="nav-link">Contacto</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="inicio" class="hero-bg" style="padding:100px 24px 80px">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div>
+        <span class="section-tag">Portafolio Profesional · Staff</span>
+        <h1 style="font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1.05;margin:0 0 20px;letter-spacing:-.02em">
+          <span class="gradient-text">gatogabo</span><br>
+          <span style="color:var(--text)">Soporte en</span><br>
+          <span style="color:var(--accent2)">Blurkit Network</span>
+        </h1>
+        <p style="color:var(--muted);font-size:18px;max-width:500px;margin-bottom:32px;line-height:1.7">
+          "Tal vez no fui el mejor soporte de Discord, pero al menos supe cómo atender 
+          tickets de la mejor manera posible en Blurkit Network."
+        </p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:40px">
+          <a href="#evidencias" class="btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ver Evidencias
+          </a>
+          <a href="#contacto" class="btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Contacto
+          </a>
+        </div>
+        <div style="display:flex;gap:40px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:36px;font-weight:800;color:var(--accent)">Blurkit</div>
+            <div style="color:var(--muted);font-size:13px">Network</div>
+          </div>
+          <div>
+            <div style="font-size:36px;font-weight:800;color:var(--accent2)">Soporte</div>
+            <div style="color:var(--muted);font-size:13px">Tickets & Reportes</div>
+          </div>
+          <div>
+            <div style="font-size:36px;font-weight:800;color:var(--text)">Discord</div>
+            <div style="color:var(--muted);font-size:13px">ID: 1381677438102409216</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center">
+        <div style="position:relative">
+          <div style="position:absolute;inset:-20px;background:radial-gradient(circle,rgba(122,172,43,.3),transparent 70%);border-radius:50%;filter:blur(30px)"></div>
+          <div style="position:relative;background:var(--card);border:2px solid var(--accent);border-radius:24px;padding:40px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4)">
+            <div style="width:180px;height:180px;margin:0 auto 24px;border-radius:50%;background:linear-gradient(135deg,var(--accent-soft),var(--accent2-soft));display:flex;align-items:center;justify-content:center;border:3px solid var(--accent)">
+              <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/11a5f2e10e5d40deb943df091db180d4.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=1svC%2Bq6Xj2au%2BLHUy%2FezHPdfgmc%3D" style="width:120px;height:120px;object-fit:contain" alt="Logo BK" onerror="this.style.display='none'">
+            </div>
+            <h3 style="font-size:24px;font-weight:700;margin:0 0 4px">gatogabo</h3>
+            <p style="color:var(--accent);font-weight:600;margin:0 0 16px">Staff de Soporte</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left">
+              <div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border)">
+                <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Rol</div>
+                <div style="font-weight:600;font-size:14px">Soporte</div>
+              </div>
+              <div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border)">
+                <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em">Red</div>
+                <div style="font-weight:600;font-size:14px">Blurkit</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAYECTORIA -->
+<section id="trayectoria" style="padding:80px 24px;background:var(--bg)">
+  <div style="max-width:1000px;margin:0 auto">
+    <div class="reveal" style="text-align:center;margin-bottom:60px">
+      <span class="section-tag">Mi Recorrido</span>
+      <h2 style="font-size:clamp(32px,5vw,48px);font-weight:800;margin:0">Trayectoria en <span class="gradient-text">Blurkit</span></h2>
+    </div>
+    <div class="reveal" style="position:relative">
+      <div style="position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border)"></div>
+      <div style="display:flex;flex-direction:column;gap:32px">
+        
+        <div style="display:flex;gap:24px;align-items:flex-start">
+          <div class="timeline-dot" style="margin-top:6px"></div>
+          <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+              <h3 style="font-size:20px;font-weight:700;margin:0">Ingreso al Staff</h3>
+              <span style="background:var(--accent-soft);color:var(--accent);padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600">Inicio</span>
+            </div>
+            <p style="color:var(--muted);margin:0;line-height:1.7">
+              Entré al equipo de soporte de Blurkit Network. Recibí capacitación por parte de mi superior 
+              <strong style="color:var(--text)">S-Soporte</strong>, quien me guió en el proceso de aprendizaje 
+              sobre cómo atender tickets, manejar reportes y seguir los protocolos establecidos.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:24px;align-items:flex-start">
+          <div class="timeline-dot" style="margin-top:6px;background:var(--accent2);box-shadow:0 0 0 4px var(--accent2-soft)"></div>
+          <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+              <h3 style="font-size:20px;font-weight:700;margin:0">Atención de Tickets</h3>
+              <span style="background:var(--accent2-soft);color:var(--accent2);padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600">Activo</span>
+            </div>
+            <p style="color:var(--muted);margin:0;line-height:1.7">
+              Desempeñé mi labor atendiendo tickets de soporte de manera <strong style="color:var(--text)">formal y correcta</strong>. 
+              Seguí los protocolos establecidos para dar respuesta a los usuarios, manejando cada caso con 
+              dedicación y buscando siempre la mejor solución posible.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:24px;align-items:flex-start">
+          <div class="timeline-dot" style="margin-top:6px"></div>
+          <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+              <h3 style="font-size:20px;font-weight:700;margin:0">Reportes de Usuarios</h3>
+              <span style="background:var(--accent-soft);color:var(--accent);padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600">Acción</span>
+            </div>
+            <p style="color:var(--muted);margin:0;line-height:1.7">
+              Realicé reportes de usuarios cuando detecté comportamientos que violaban las normas, 
+              como el caso de un usuario con modalidad de <strong style="color:var(--text)">Farmbox</strong>. 
+              Tomé acción de manera adecuada siguiendo el conducto regular.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:24px;align-items:flex-start">
+          <div class="timeline-dot" style="margin-top:6px;background:var(--accent2);box-shadow:0 0 0 4px var(--accent2-soft)"></div>
+          <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+              <h3 style="font-size:20px;font-weight:700;margin:0">Top Staff Activo</h3>
+              <span style="background:var(--accent-soft);color:var(--accent);padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600">Logro</span>
+            </div>
+            <p style="color:var(--muted);margin:0;line-height:1.7">
+              Fui reconocido dentro del <strong style="color:var(--text)">Top de staff más activos</strong> en la 
+              sección de soporte de Discord, demostrando compromiso y constancia en mis funciones.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:24px;align-items:flex-start">
+          <div class="timeline-dot" style="margin-top:6px;background:#666;box-shadow:0 0 0 4px rgba(102,102,102,.2)"></div>
+          <div style="flex:1;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+              <h3 style="font-size:20px;font-weight:700;margin:0">Retiro del Staff</h3>
+              <span style="background:rgba(102,102,102,.2);color:#aaa;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600">Cierre</span>
+            </div>
+            <p style="color:var(--muted);margin:0;line-height:1.7">
+              Mi paso por el staff llegó a su fin. El Discord Manager informó mi salida del equipo. 
+              Me llevo la experiencia de haber aprendido a atender tickets de la mejor manera posible 
+              dentro de Blurkit Network.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVIDENCIAS -->
+<section id="evidencias" style="padding:80px 24px;background:var(--card)">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="reveal" style="text-align:center;margin-bottom:60px">
+      <span class="section-tag">Galería de Evidencias</span>
+      <h2 style="font-size:clamp(32px,5vw,48px);font-weight:800;margin:0 0 16px">Mi Trabajo en <span class="gradient-text">Imágenes</span></h2>
+      <p style="color:var(--muted);max-width:600px;margin:0 auto;font-size:16px">
+        Haz clic en cualquier imagen para ampliarla y ver los detalles
+      </p>
+    </div>
+
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px">
+      
+      <div class="gallery-item" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="openModal(this)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/30c5986a145144c6b0585c0028c860a7.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=NeF7n%2BxSHIbh%2F9gh1QXIsGFRK9M%3D" style="width:100%;height:240px;object-fit:cover;display:block" alt="Reporte Farmbox" onerror="this.style.display='none'">
+        <div style="padding:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></span>
+            <span style="font-size:11px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.1em">Reporte</span>
+          </div>
+          <h4 style="font-size:17px;font-weight:700;margin:0 0 8px">Acción: Farmbox Detectado</h4>
+          <p style="color:var(--muted);font-size:14px;margin:0;line-height:1.6">
+            El soporte reporta a un usuario con modalidad de Farmbox. Acción correcta y oportuna 
+            siguiendo los protocolos establecidos.
+          </p>
+        </div>
+      </div>
+
+      <div class="gallery-item" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="openModal(this)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/22d29f1a72134f2286dae3c188ce6653.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=0TYQ6H1%2BjXKleke6%2Fjo8ZjPwT0Q%3D" style="width:100%;height:240px;object-fit:cover;display:block" alt="Ticket 1" onerror="this.style.display='none'">
+        <div style="padding:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent2)"></span>
+            <span style="font-size:11px;color:var(--accent2);font-weight:600;text-transform:uppercase;letter-spacing:.1em">Atención</span>
+          </div>
+          <h4 style="font-size:17px;font-weight:700;margin:0 0 8px">Ticket Formal #1</h4>
+          <p style="color:var(--muted);font-size:14px;margin:0;line-height:1.6">
+            Atención de ticket de soporte realizada de manera formal, profesional y siguiendo 
+            el formato correcto establecido por el servidor.
+          </p>
+        </div>
+      </div>
+
+      <div class="gallery-item" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="openModal(this)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/6cec6eddeb5e40df8213dfd0d1268d5d.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=KwDKF8f0GF7LD3AW2wl%2FAmK6rk4%3D" style="width:100%;height:240px;object-fit:cover;display:block" alt="Ticket 2" onerror="this.style.display='none'">
+        <div style="padding:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent2)"></span>
+            <span style="font-size:11px;color:var(--accent2);font-weight:600;text-transform:uppercase;letter-spacing:.1em">Atención</span>
+          </div>
+          <h4 style="font-size:17px;font-weight:700;margin:0 0 8px">Ticket Formal #2</h4>
+          <p style="color:var(--muted);font-size:14px;margin:0;line-height:1.6">
+            Continuidad en la atención de tickets. Cada interacción mantiene el estándar de 
+            calidad y formalidad requerido en Blurkit.
+          </p>
+        </div>
+      </div>
+
+      <div class="gallery-item" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="openModal(this)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/90dfb0e44b50400a99ae5af1998e541b.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=4k4fB3OGN72bhoP0LfelmicTs%2BM%3D" style="width:100%;height:240px;object-fit:cover;display:block" alt="Ticket 3" onerror="this.style.display='none'">
+        <div style="padding:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent2)"></span>
+            <span style="font-size:11px;color:var(--accent2);font-weight:600;text-transform:uppercase;letter-spacing:.1em">Atención</span>
+          </div>
+          <h4 style="font-size:17px;font-weight:700;margin:0 0 8px">Ticket Formal #3</h4>
+          <p style="color:var(--muted);font-size:14px;margin:0;line-height:1.6">
+            Tercera evidencia de atención formal. Demuestra consistencia y dedicación en el 
+            manejo de los casos de soporte.
+          </p>
+        </div>
+      </div>
+
+      <div class="gallery-item" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="openModal(this)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/3c7dc0679cfa4c1d964addd4c69c8845.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=DkexHz6GaQjeLTyVQrueTUwONPs%3D" style="width:100%;height:240px;object-fit:cover;display:block" alt="Cierre Ticket" onerror="this.style.display='none'">
+        <div style="padding:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="width:8px;height:8px;border-radius:50%;background:#666"></span>
+            <span style="font-size:11px;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:.1em">Cierre</span>
+          </div>
+          <h4 style="font-size:17px;font-weight:700;margin:0 0 8px">Cierre por Falta de Respuesta</h4>
+          <p style="color:var(--muted);font-size:14px;margin:0;line-height:1.6">
+            Al no recibir respuesta del usuario en el reporte, el soporte procede a cerrar 
+            el ticket correctamente según protocolo.
+          </p>
+        </div>
+      </div>
+
+      <div class="gallery-item" style="background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="openModal(this)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/d5a2520129f544e0bdc29575fc676670.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=4UzIJXWeEywRdBooxdluCqbHSn4%3D" style="width:100%;height:240px;object-fit:cover;display:block" alt="Top Staff" onerror="this.style.display='none'">
+        <div style="padding:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></span>
+            <span style="font-size:11px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.1em">Logro</span>
+          </div>
+          <h4 style="font-size:17px;font-weight:700;margin:0 0 8px">Top Staff Más Activo</h4>
+          <p style="color:var(--muted);font-size:14px;margin:0;line-height:1.6">
+            Reconocimiento dentro del Top de staff más activos en la sección de soporte 
+            de Discord de Blurkit Network.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CAPACITACION -->
+<section id="capacitacion" style="padding:80px 24px;background:var(--bg)">
+  <div style="max-width:1200px;margin:0 auto">
+    <div class="reveal" style="text-align:center;margin-bottom:60px">
+      <span class="section-tag">Formación Recibida</span>
+      <h2 style="font-size:clamp(32px,5vw,48px);font-weight:800;margin:0 0 16px">Capacitación por <span class="gradient-text">S-Soporte</span></h2>
+      <p style="color:var(--muted);max-width:600px;margin:0 auto;font-size:16px">
+        Mi superior S-Soporte me guió en el proceso de aprendizaje al ingresar al staff
+      </p>
+    </div>
+
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:40px">
+      
+      <div class="gallery-item" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="openModal(this)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/b0e6d490d9024b51acdc4a2d798e59e6.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=GS1lOSl8JxH0pbKWVWni%2FxKlo7M%3D" style="width:100%;height:280px;object-fit:cover;display:block" alt="Capacitación 1" onerror="this.style.display='none'">
+        <div style="padding:20px">
+          <h4 style="font-size:17px;font-weight:700;margin:0 0 8px">Sesión de Capacitación #1</h4>
+          <p style="color:var(--muted);font-size:14px;margin:0">Primera sesión de formación con mi superior S-Soporte al ingresar al equipo.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="openModal(this)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/9b9afbbd5a1b407195dda01999b72f7c.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=QLW5tVftdv2kIzDsr2%2F2eBlJG1A%3D" style="width:100%;height:280px;object-fit:cover;display:block" alt="Capacitación 2" onerror="this.style.display='none'">
+        <div style="padding:20px">
+          <h4 style="font-size:17px;font-weight:700;margin:0 0 8px">Sesión de Capacitación #2</h4>
+          <p style="color:var(--muted);font-size:14px;margin:0">Continuidad en el proceso de aprendizaje y guía por parte del S-Soporte.</p>
+        </div>
+      </div>
+
+      <div class="gallery-item" style="background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden" onclick="openModal(this)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/be974eec58f7446fa8e5e2d453373d8d.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=dq4J66IdWOBAefwfsLJdcp%2BX%2FnM%3D" style="width:100%;height:280px;object-fit:cover;display:block" alt="Capacitación 3" onerror="this.style.display='none'">
+        <div style="padding:20px">
+          <h4 style="font-size:17px;font-weight:700;margin:0 0 8px">Sesión de Capacitación #3</h4>
+          <p style="color:var(--muted);font-size:14px;margin:0">Tercera evidencia de la capacitación recibida para desempeñar mis funciones.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
+      <div class="stat-card">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:16px">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <h4 style="font-size:18px;font-weight:700;margin:0 0 8px">Formación Completa</h4>
+        <p style="color:var(--muted);font-size:14px;margin:0;line-height:1.6">
+          Recibí la capacitación necesaria por parte de mi superior para poder 
+          desenvolverme correctamente en el área de soporte.
+        </p>
+      </div>
+      <div class="stat-card">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);margin-bottom:16px">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h4 style="font-size:18px;font-weight:700;margin:0 0 8px">Protocolos Aprendidos</h4>
+        <p style="color:var(--muted);font-size:14px;margin:0;line-height:1.6">
+          Conocí y apliqué los protocolos oficiales de Blurkit para la atención 
+          de tickets y manejo de reportes de usuarios.
+        </p>
+      </div>
+      <div class="stat-card">
+        <div style="width:48px;height:48px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);margin-bottom:16px">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h4 style="font-size:18px;font-weight:700;margin:0 0 8px">Aplicación Práctica</h4>
+        <p style="color:var(--muted);font-size:14px;margin:0;line-height:1.6">
+          Puse en práctica lo aprendido atendiendo tickets de manera formal, 
+          reportando usuarios y cerrando casos correctamente.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECONOCIMIENTOS -->
+<section id="reconocimientos" style="padding:80px 24px;background:var(--card)">
+  <div style="max-width:1000px;margin:0 auto">
+    <div class="reveal" style="text-align:center;margin-bottom:60px">
+      <span class="section-tag">Hitos & Reconocimientos</span>
+      <h2 style="font-size:clamp(32px,5vw,48px);font-weight:800;margin:0">Mi Huella en <span class="gradient-text">Blurkit</span></h2>
+    </div>
+
+    <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-bottom:40px">
+      
+      <div class="stat-card" style="border-top:3px solid var(--accent)">
+        <div style="font-size:48px;font-weight:800;color:var(--accent);margin-bottom:8px">Top</div>
+        <h4 style="font-size:18px;font-weight:700;margin:0 0 8px">Staff Más Activo</h4>
+        <p style="color:var(--muted);font-size:14px;margin:0">
+          Reconocido dentro del ranking de staff más activos en la sección de soporte de Discord.
+        </p>
+      </div>
+
+      <div class="stat-card" style="border-top:3px solid var(--accent2)">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/b614e716df8c43759e7782304c5ac951.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=I2xPOHgYyLtZHdsc3Habn9DyGAI%3D" style="width:100%;height:120px;object-fit:contain;border-radius:8px;margin-bottom:16px;background:var(--bg);padding:8px" alt="Discord Manager" onerror="this.style.display='none'">
+        <h4 style="font-size:18px;font-weight:700;margin:0 0 8px">Aviso de Retiro</h4>
+        <p style="color:var(--muted);font-size:14px;margin:0">
+          El Discord Manager informó oficialmente mi salida del equipo de staff.
+        </p>
+      </div>
+
+      <div class="stat-card" style="border-top:3px solid var(--text)">
+        <div style="font-size:48px;font-weight:800;color:var(--text);margin-bottom:8px">✓</div>
+        <h4 style="font-size:18px;font-weight:700;margin:0 0 8px">Experiencia Completa</h4>
+        <p style="color:var(--muted);font-size:14px;margin:0">
+          Pasé por todo el proceso: ingreso, capacitación, práctica activa y cierre de ciclo.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- CITA -->
+    <div class="reveal" style="background:linear-gradient(135deg,var(--accent-soft),var(--accent2-soft));border:1px solid var(--border);border-radius:20px;padding:48px;text-align:center;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-20px;left:20px;font-size:120px;color:var(--accent);opacity:.15;font-family:serif;line-height:1">"</div>
+      <p style="font-size:clamp(18px,2.5vw,24px);font-weight:600;color:var(--text);line-height:1.6;max-width:700px;margin:0 auto 24px;position:relative;z-index:1">
+        Tal vez no fui un buen soporte de Discord, pero al menos supe cómo atender 
+        tickets de la mejor manera posible en Blurkit Network.
+      </p>
+      <div style="color:var(--accent);font-weight:700;font-size:16px;position:relative;z-index:1">— gatogabo</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" style="padding:80px 24px;background:var(--bg)">
+  <div style="max-width:800px;margin:0 auto;text-align:center">
+    <div class="reveal">
+      <span class="section-tag">Información de Contacto</span>
+      <h2 style="font-size:clamp(32px,5vw,48px);font-weight:800;margin:0 0 20px">¿Quieres <span class="gradient-text">Conectar?</span></h2>
+      <p style="color:var(--muted);font-size:16px;margin-bottom:40px">
+        Este portafolio documenta mi paso por el equipo de soporte de Blurkit Network.
+      </p>
+      
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:600px;margin:0 auto">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center">
+          <div style="width:48px;height:48px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);margin:0 auto 16px">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </div>
+          <h4 style="font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px">Usuario Discord</h4>
+          <p style="font-size:18px;font-weight:700;color:var(--text);margin:0">gatogabo</p>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center">
+          <div style="width:48px;height:48px;border-radius:12px;background:var(--accent2-soft);display:flex;align-items:center;justify-content:center;color:var(--accent2);margin:0 auto 16px">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+          <h4 style="font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px">ID Discord</h4>
+          <p style="font-size:16px;font-weight:700;color:var(--text);margin:0;font-family:monospace">1381677438102409216</p>
+        </div>
+      </div>
+
+      <div style="margin-top:40px">
+        <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/11a5f2e10e5d40deb943df091db180d4.png~tplv-0es2k971ck-image.image?rcl=202608270426440008B1A1FC6B6305F3B8&rk3s=8e244e95&rrcfp=935dee89&x-expires=1788380805&x-signature=1svC%2Bq6Xj2au%2BLHUy%2FezHPdfgmc%3D" style="width:64px;height:64px;object-fit:contain;margin:0 auto 16px;opacity:.6" alt="Logo BK" onerror="this.style.display='none'">
+        <p style="color:var(--muted);font-size:13px">Blurkit Network · Portafolio de Staff</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--card);border-top:1px solid var(--border);padding:32px 24px">
+  <div style="max-width:1200px;margin:0 auto;text-align:center">
+    <p style="color:var(--muted);font-size:13px;margin:0">
+      Portafolio profesional de <strong style="color:var(--text)">gatogabo</strong> · Staff de Soporte en Blurkit Network
+    </p>
+  </div>
+</footer>
+
+<!-- MODAL LIGHTBOX -->
+<div class="modal" id="modal" onclick="closeModal(event)">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <img id="modal-img" src="" alt="">
+  <div class="modal-caption" id="modal-caption"></div>
+</div>
+
+<script>
+// Reveal animations
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible')}
+  })
+},{threshold:.1})
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el))
+
+// Nav active state
+const sections = document.querySelectorAll('section[id]')
+const navLinks = document.querySelectorAll('.nav-link')
+window.addEventListener('scroll',()=>{
+  let current=''
+  sections.forEach(s=>{
+    const top=s.offsetTop-100
+    if(window.scrollY>=top)current=s.getAttribute('id')
+  })
+  navLinks.forEach(l=>{
+    l.classList.remove('active')
+    if(l.getAttribute('href')==='#'+current)l.classList.add('active')
+  })
+})
+
+// Modal lightbox
+function openModal(el){
+  const img=el.querySelector('img')
+  const title=el.querySelector('h4')
+  const desc=el.querySelector('p')
+  document.getElementById('modal-img').src=img.src
+  document.getElementById('modal-caption').textContent=(title?title.textContent:'')+(desc?' — '+desc.textContent:'')
+  document.getElementById('modal').classList.add('active')
+  document.body.style.overflow='hidden'
+}
+function closeModal(e){
+  if(e && e.target && e.target.id!=='modal' && e.target.closest('.modal-close')===null && e.target.tagName!=='IMG')return
+  document.getElementById('modal').classList.remove('active')
+  document.body.style.overflow=''
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeModal()
+})
+</script>
+
+</body>
+</html>
